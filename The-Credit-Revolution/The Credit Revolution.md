@@ -104,7 +104,7 @@ To understand Creditcoin's potential, it's best viewed not as a direct competito
 
 ### **7. Global Expansion: Fostering a Worldwide Network of Builders**
 
-![CEIP](/The-Credit-Revolution/Images/CEIP.webp)
+![CEIP](/The-Credit-Revolution/Images/cover.webp)
 
 Creditcoin is aggressively executing a global expansion strategy that combines high-level institutional partnerships with grassroots community building. The quality and strategic nature of these collaborations are a testament to the project's real-world traction.
 
