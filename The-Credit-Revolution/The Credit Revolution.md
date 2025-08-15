@@ -104,7 +104,7 @@ To understand Creditcoin's potential, it's best viewed not as a direct competito
 
 ### **7. Global Expansion: Fostering a Worldwide Network of Builders**
 
-![CEIP](/The-Credit-Revolution/Images/cover.webp)
+![Cover](/The-Credit-Revolution/Images/CEIP.webp)
 
 Creditcoin is aggressively executing a global expansion strategy that combines high-level institutional partnerships with grassroots community building. The quality and strategic nature of these collaborations are a testament to the project's real-world traction.
 
@@ -116,7 +116,7 @@ Creditcoin is aggressively executing a global expansion strategy that combines h
 
 ### **8. Conclusion: The Revolution Will Be Credited**
 
-![Cover](/The-Credit-Revolution/Images/CEIP.webp)
+![Cover](https://raw.githubusercontent.com/Ludium-Official/creditcoin/refs/heads/main/The-Credit-Revolution/Images/Cover.webp)
 
 The story of Creditcoin is the story of a great bridge being built. It's a bridge from the abstract world of DeFi to the tangible needs of the real economy. It's a bridge from the unbanked villages of Africa to the global capital markets. And most importantly, it's a bridge for billions of people to cross over from financial invisibility to economic empowerment.
 
