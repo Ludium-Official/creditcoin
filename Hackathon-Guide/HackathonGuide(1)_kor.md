@@ -9,7 +9,7 @@
 
 ### **0. 해커톤이란?**
 
-![Main](/Hackathon-Guide//Images/Main.jpg)
+![Main](/Hackathon-Guide//Images/Main.png)
 
 해커톤(Hackathon)은 해킹(Hacking)과 마라톤(Marathon)의 합성어로, 개발자, 디자이너, 기획자 등으로 구성된 팀이 모여 제한된 시간 동안 아이디어를 구체화하고 프로토타입 혹은 완제품을 만들어내는 이벤트입니다.
 

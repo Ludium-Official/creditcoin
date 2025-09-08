@@ -1,161 +1,14 @@
-### **유니스왑 V3/V4 딥다이브 (1)**
+### **유니스왑 V3/V4 딥다이브 (2)**
 
-![Main](</Advanced-Resources/Uniswap-Deep-Dive(1)/Images/Main.png>)
+![Main](/Advanced-Resources/Uniswap-Deep-Dive/Images/Main.png)
 
-### **1. DEX의 등장**
+### **1. V3 등장 배경**
 
-### 1-1. CEX 한계와 탈중앙화 수요
+...
 
-초기의 암호화폐 거래는 대부분 중앙화 거래소(Centralized Exchange, CEX) 에서 이루어졌다.<br/>
-사용자는 거래소 계정에 자금을 예치하고, 거래소가 운영하는 오더북(order book) 시스템을 통해 매수/매도 주문을 매칭했다.
+### **2. Uniswap V3 코드기반 상세분석**
 
-하지만 이 구조는 몇 가지 근본적인 한계를 가진다.
-
-- **보관 리스크:** 사용자는 자산을 직접 보유하지 않고 거래소에 맡겨야 함 → 해킹/파산 시 전액 손실 가능 (ex. Mt.Gox, FTX 사건)
-- **투명성 부족:** 거래소 내부 거래 내역이나 재무 건전성이 외부에 드러나지 않음
-- **접근 제한:** KYC/AML 규제에 따라 특정 지역, 사용자 차단 → 누구나 자유롭게 쓸 수 없음
-
-이러한 문제를 극복하기 위해 탈중앙화 거래소(Decentralized Exchange, DEX) 가 등장했다.<br/>
-DEX는 자산 보관과 거래 매칭을 모두 스마트 컨트랙트가 수행하여, 사용자가 직접 지갑을 통해 자금을 관리할 수 있다.
-
-### 1-2. AMM(Automated Market Maker)의 기본 원리
-
-기존 오더북 기반 거래소는 [사람이 매수/매도 주문을 제출 → 주문 매칭] 구조이다.<br/>
-하지만 블록체인 환경에서는 거래 속도가 느리고, 유동성이 부족할 수 있다.
-
-이를 해결하기 위해 나온 개념이 자동화된 마켓 메이커(Automated Market Maker, AMM) 이다.
-
-![AMM](</Advanced-Resources/Uniswap-Deep-Dive(1)/Images/AMM.jpg>)
-<두 자산의 유동성을 하나의 풀(Pool)에 예치하고, 수학적 공식(x \* y = k)을 이용해 가격을 자동 산출하는 원리>
-
-> Ex)<br/>
-> 유동성 풀이 10 ETH (= X)와 1,000 USDC (= Y)를 가지고 있다면 두 잔액의 곱은 10,000 (=K)이 됨<br/>
-> → 만약 사용자가 1 ETH를 USDC로 구매하면, 새로운 잔액은 9 ETH와 1111.11 USDC가 되어 곱은 10,000으로 유지됨<br/>
-> → 이 과정에서 사용자는 1 ETH를 얻기 위해 111.11 USDC를 지불하게 됨
-
-- **장점:** 오더북, 거래 상대방이 없어도 즉시 거래 가능
-- **한계:** 유동성 풀의 가격은 외부 시장과 괴리가 생길 수 있음 → 이를 아비트라지(차익거래자) 가 조정
-
-즉, AMM은 [수학 공식 기반의 탈중앙화된 가격 책정 & 거래 매칭 메커니즘] 이라 할 수 있다.
-
-### 1-3. LP(유동성 공급자) & 수수료 분배 개념
-
-AMM이 작동하려면 풀에 자산이 공급되어야 한다. 이 역할을 하는 사람이 유동성 공급자(Liquidity Provider, LP) 이다.
-
-> LP의 역할)<br/>
-> ETH/USDC 풀에 ETH와 USDC를 예치<br/>
-> ex) 1 ETH + 2000 USDC
-
-**보상 :**<br/>
-거래 수수료 → 사용자가 풀을 통해 거래할 때 발생하는 수수료가 LP에게 분배<br/>
-인센티브 → 특정 프로토콜은 추가로 토큰 보상을 제공 (Liquidity Mining)
-
-**위험 요소 :**<br/>
-Impermanent Loss (IL, 일시적 손실) → 자산 가격이 크게 변할 경우, 그냥 들고 있었을 때보다 가치가 줄어들 수 있음
-
-따라서 LP는 단순히 예치만 하는 게 아니라, “수익 vs. 리스크” 전략을 세워야 한다.
-
----
-
-### 2. Uniswap의 발전사
-
-#### 1) Uniswap V1 (2018)
-
-![Swap1](</Advanced-Resources/Uniswap-Deep-Dive(1)/Images/V1_Swap.png>)
-
-**[특징]**
-
-- AMM(Constant Product Market Maker)를 온체인에 구현하는 것이 핵심 아이디어
-- ERC-20 ↔ ETH 전용 풀만 지원
-- 유동성 풀에 토큰과 ETH를 50:50 비율로 예치
-- 수수료는 0.3% 고정, 모든 거래에서 LP에게 분배
-
-**[한계점]**
-
-- ERC-20 ↔ ERC-20 교환 시, 반드시 ETH를 거쳐야 함 (예: DAI → ETH → USDC)
-
-#### 2) [Uniswap V2 (2020)](https://blog.uniswap.org/uniswap-v2)
-
-![Swap2](</Advanced-Resources/Uniswap-Deep-Dive(1)/Images/V2_Swap.png>)
-
-**[특징]**
-
-- ERC-20 ↔ ERC-20 풀 지원 (ETH 경유 필요 없음)
-- Price Oracle 기능 도입 (Time-Weighted Average Price, TWAP)
-- 블록 타임스탬프 기반으로 평균 가격 계산 → 조작 방어 강화
-- 수수료 구조는 여전히 0.3% 고정
-- 각 거래쌍(Token A, Token B)마다 별도 풀 생성
-
-**[한계점]**
-
-- LP들은 단순히 “0 ~ ∞” 가격 구간 전체에 유동성을 공급해야 함<br/>
-  → 상당 부분이 실제로 사용되지 않음<br/>
-  → LP들은 자신들의 자본 중 극히 일부에서만 수수료를 벌 수 있음 & 트레이더들은 종종 높은 슬리피지를 감수해야 함
-
-#### 3) [Uniswap V3 (2021)](https://blog.uniswap.org/uniswap-v3) - Concentrated Liquidity (집중 유동성)
-
-**[특징]**
-
-- **Concentrated Liquidity:** LP가 원하는 <span style="color:orange">가격 구간</span>을 직접 지정해 유동성 제공 가능
-
-  > Ex) ETH/DAI 풀에서 한 LP는<br/>
-  > $1,000~$2,000 구간에 $100,<br/>
-  > $1,500~$1,750 구간에 추가로 $50을 배치할 수 있음
-
-  특정 가격 구간에서 더 많은 유동성을 제공 → 자본 효율성이 크게 개선 → 적은 자금으로 더 많은 거래 수수료 수익
-
-- **Multiple Fee Tiers:** 각 거래 페어(pair)에 대해 0.05%, 0.3%, 1% 등 <span style="color:orange">다양한 수수료 구간</span> 선택 가능
-
-  토큰 특성(Stablecoin vs 변동성 큰 자산)에 맞게 최적화 가능
-
-  > Ex) **동일 자산 성격의 페어(USDC/DAI 등)** 는 0.05% 티어에 모일 것이고, ETH/DAI 같은 일반적인 페어는 0.30% 티어를 사용할 가능성이 높다. 한편, 익숙하지 않은(exotic) 자산 페어는 1.00% 스왑 수수료가 더 적합할 수 있다.
-
-- **Non-Fungible LP Position:** ERC-20 형태였던 <span style="color:orange">LP 토큰</span>을 개별 LP 위치(가격 구간, 예치 자산량)를 지정할 수 있는 <span style="color:orange">NFT</span>로 변경
-
-**[한계점]**
-
-- LP 전략이 복잡해짐 (단순히 예치만 하는 게 아니라, 구간 설정과 재조정 필요)
-- 소액 유저보다 전문 LP에게 유리한 구조
-
-#### 4) [Uniswap V4 (2023 발표)](https://blog.uniswap.org/uniswap-v4) - 확장성과 커스터마이징
-
-![Swap4](</Advanced-Resources/Uniswap-Deep-Dive(1)/Images/V4_Swap.jpg>)
-
-**[특징]**
-
-- **Singleton Architecture (단일 컨트랙트 구조):** V2/V3에서는 거래쌍마다 풀 컨트랙트가 따로 배포되어야 했음<br/>
-  → 가스 비용 & 배포 비용 ↑<br/>
-  → V4에서는 모든 풀을 하나의 <span style="color:orange">“Singleton”</span> 컨트랙트에 담아 효율적으로 관리<br/>
-  → 풀 생성 비용 절감, 코드 재사용성 강화
-
-- **Hooks:** 풀 배포자가 풀 생애주기의 주요 지점 (ex. 스왑 전후, LP 포지션 변경 전후 등) 에서 지정된 동작을 수행하는 코드를 도입할 수 있음
-
-  > Ex)<br/>
-  > 거래 시마다 수수료를 특정 DAO 금고로 전송<br/>
-  > 유동성 공급할 때 자동으로 리밸런싱 전략 실행<br/>
-  > KYC 검증이 필요한 “허가형 풀” 구현<br/>
-
-- **Custom Pool Logic:** 기존 V3는 AMM 수학이 고정(Concentrated Liquidity 구조) 되어 제한적<br/>
-  → V4에서는 새로운 수학적 모델(예: 동적 수수료, StableSwap 곡선 등)을 개발자가 직접 구현 가능
-
-- **EIP-1153:** Transient Storage (임시 스토리지) 활용<br/>
-  → Swap 계산 시 임시 데이터를 임시 스토리지에 저장
-  → 기존 스토리지 대비 가스 비용 대폭 절감
-
-<br/>
-
-| 버전   | 출시 시기   | 주요 특징                                                                                                                                               | 한계/과제                                                                                 |
-| ------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **V1** | 2018        | - 최초의 AMM DEX (ETH-ERC20 풀)<br>- 누구나 유동성 공급 가능                                                                                            | - ETH 페어만 지원 (ERC20-ERC20 불가)<br>- 단순 수학(비효율성)                             |
-| **V2** | 2020        | - ERC20-ERC20 풀 지원<br>- 가격 오라클 개선<br>- Flash Swap 도입                                                                                        | - 모든 자본이 전체 가격 곡선에 분산 → 비효율적                                            |
-| **V3** | 2021        | - **Concentrated Liquidity** (자본 효율성 ↑)<br>- 다중 수수료 티어(0.05%, 0.3%, 1%)<br>- Non-Fungible LP Position (NFT화)                               | - 복잡성 증가 (LP가 전략적으로 유동성 배치 필요)<br>- 풀별 컨트랙트 분리 → 가스 비용 여전 |
-| **V4** | 2023 (발표) | - **Singleton Architecture** (단일 컨트랙트)<br>- **Hooks** 지원 (커스터마이징)<br>- Custom Pool Logic 구현 가능<br>- EIP-1153 (Transient Storage) 활용 | - 아직 메인넷 배포 전<br>- 커뮤니티/보안 검증 필요                                        |
-
----
-
-### 3. Uniswap V3 코드기반 상세분석
-
-#### 3-1. Immutable & Concentrated Liquidity
+#### 2-1. Immutable & Concentrated Liquidity
 
 **Immutable (불변성):**
 Uniswap V3는 모든 풀이 단일 Factory 컨트랙트에서 생성되며, 각 풀은 고유한 주소를 가진다.
@@ -230,7 +83,7 @@ contract UniswapV3Pool {
 }
 ```
 
-#### 3-2. LP NFT (Non-Fungible Position)
+#### 2-2. LP NFT (Non-Fungible Position)
 
 V3에서는 LP 포지션이 NFT로 표현된다. 각 포지션은 고유한 가격 구간과 유동성 양을 가진다.
 
@@ -308,7 +161,7 @@ contract NonfungiblePositionManager is
 }
 ```
 
-#### 3-3. Tick System (가격 구간 시스템)
+#### 2-3. Tick System (가격 구간 시스템)
 
 V3는 가격을 이산적인 "tick" 단위로 나누어 관리한다.
 
@@ -348,7 +201,7 @@ library TickMath {
 }
 ```
 
-#### 3-4. Swap 로직 구현
+#### 2-4. Swap 로직 구현
 
 V3의 스왑은 현재 가격과 목표 가격 사이의 모든 tick을 순회하며 유동성을 소모한다.
 
@@ -465,7 +318,7 @@ function swap(
 }
 ```
 
-#### 3-5. 개발 최적화 기법들
+#### 2-5. 개발 최적화 기법들
 
 **1. 가스 최적화**
 
