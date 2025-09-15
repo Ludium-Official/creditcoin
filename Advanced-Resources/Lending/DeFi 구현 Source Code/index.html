@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>간단 DeFi Lending 연동</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    .section {
+      margin-bottom: 25px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #2979ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1565c0;
+    }
+    .info-box {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 간단 DeFi Lending 연동</h1>
+
+    <div class="section">
+      <label for="depositAmount">예치할 금액 (ETH)</label>
+      <input type="number" id="depositAmount" placeholder="ex) 1">
+      <button onclick="depositEth()">예치하기</button>
+    </div>
+
+    <div class="section">
+      <label for="borrowAmount">대출할 금액 (ETH)</label>
+      <input type="number" id="borrowAmount" placeholder="ex) 0.5">
+      <button onclick="borrowEth()">빌리기</button>
+    </div>
+
+    <div class="section">
+      <label for="repayAmount">상환할 금액 (ETH)</label>
+      <input type="number" id="repayAmount" placeholder="ex) 0.5">
+      <button onclick="repayEth()">상환하기</button>
+    </div>
+
+    <div class="section">
+      <button onclick="refreshBalances()">잔액 및 이자율 조회</button>
+      <div class="info-box" id="balanceInfo">
+        예치 금액: <span id="depositValue">-</span> ETH<br>
+        대출 금액: <span id="borrowValue">-</span> ETH<br>
+        이자율: <span id="interestRate">5%</span> (고정)
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS_HERE"; // 수정 필요
+    const abi = [ /* Remix에서 복사한 ABI 붙여넣기 */ ];
+
+    let web3;
+    let contract;
+    let userAccount;
+
+    async function init() {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await web3.eth.getAccounts();
+        userAccount = accounts[0];
+        contract = new web3.eth.Contract(abi, contractAddress);
+        refreshBalances();
+      } else {
+        alert("MetaMask가 필요합니다.");
+      }
+    }
+
+    async function depositEth() {
+      const amount = document.getElementById("depositAmount").value;
+      await contract.methods.deposit().send({
+        from: userAccount,
+        value: web3.utils.toWei(amount, "ether")
+      });
+      refreshBalances();
+    }
+
+    async function borrowEth() {
+      const amount = document.getElementById("borrowAmount").value;
+      await contract.methods.borrow(web3.utils.toWei(amount, "ether")).send({
+        from: userAccount
+      });
+      refreshBalances();
+    }
+
+    async function repayEth() {
+      const amount = document.getElementById("repayAmount").value;
+      await contract.methods.repay().send({
+        from: userAccount,
+        value: web3.utils.toWei(amount, "ether")
+      });
+      refreshBalances();
+    }
+
+    async function refreshBalances() {
+      const deposit = await contract.methods.getDeposit(userAccount).call();
+      const borrow = await contract.methods.getBorrow(userAccount).call();
+      document.getElementById("depositValue").innerText = web3.utils.fromWei(deposit, "ether");
+      document.getElementById("borrowValue").innerText = web3.utils.fromWei(borrow, "ether");
+    }
+
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>
