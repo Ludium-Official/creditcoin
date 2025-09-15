@@ -1,0 +1,112 @@
+{
+  "address": "0x45bA973bEF2b81Ffc1ee63D06A6C97588fee69F1",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "complete",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "completed",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "staker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "stakerBalance",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawAll",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x1ac5640d1c76e8deae94b1380009d6560fc22b79af80985401734ed354ba5a2a",
+  "receipt": {
+    "to": null,
+    "from": "0x9a891924802bfE74fD62b3a7AcF8B21394B3EE5d",
+    "contractAddress": "0x45bA973bEF2b81Ffc1ee63D06A6C97588fee69F1",
+    "transactionIndex": 0,
+    "gasUsed": "165385",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xc7dda5ebf84d116a439f012d29c3403a44b740579b6a43fa5e0f35be1cbfb7b0",
+    "transactionHash": "0x1ac5640d1c76e8deae94b1380009d6560fc22b79af80985401734ed354ba5a2a",
+    "logs": [],
+    "blockNumber": 3346685,
+    "cumulativeGasUsed": "165385",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "26ea18b76053079b7875e9276c215643",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"complete\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"completed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"staker\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"stakerBalance\",\"type\":\"uint256\"}],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/ExampleExternalContract.sol\":\"ExampleExternalContract\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/ExampleExternalContract.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity 0.8.4;  //Do not change the solidity version as it negativly impacts submission grading\\r\\n\\r\\ncontract ExampleExternalContract {\\r\\n\\r\\n  bool public completed;\\r\\n  uint totalStaked;\\r\\n\\r\\n  constructor() {}\\r\\n\\r\\n  // \\uc2a4\\ud14c\\uc774\\ud0b9 \\ub9c8\\uac10\\r\\n  function complete() public payable {\\r\\n    completed = true;\\r\\n    totalStaked = msg.value;\\r\\n  }\\r\\n\\r\\n  // \\ubcf4\\uc0c1 \\ubd84\\ubc30\\r\\n  function withdrawAll(address staker, uint256 stakerBalance) public payable {\\r\\n    // \\uc608\\uce58 \\ube44\\uc728\\uc5d0 \\ub530\\ub978 \\ubcf4\\uc0c1 \\uacc4\\uc0b0\\r\\n    // totalStaked: \\uc2a4\\ud14c\\uc774\\ud0b9 \\ub41c \\uc790\\uc0b0 \\ucd1d\\uc561\\r\\n    // address(this).balacne: \\ud50c\\ub7ab\\ud3fc\\uc5d0\\uc11c \\uc0ac\\uc6a9\\uc790\\uc5d0\\uac8c \\ubcf4\\uc0c1\\uc73c\\ub85c \\uc8fc\\uae30 \\uc704\\ud55c \\uae08\\uc561\\uc774 \\ud3ec\\ud568\\ub41c \\uc790\\uc0b0 \\ucd1d\\uc561\\r\\n    uint256 reward = (address(this).balance * stakerBalance) / totalStaked;\\r\\n    (bool sent, ) = staker.call{value: reward}(\\\"\\\");\\r\\n    require(sent, \\\"Failed to send reward\\\");\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0x67ab4b02cc6edc07b04349bae900f2d3ae3ecfd9bb6a3f594c25802f8dda729c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610207806100206000396000f3fe6080604052600436106100345760003560e01c8063522e1177146100395780639d9a7fe914610053578063cc6dbc2714610081575b600080fd5b6100516000805460ff19166001908117909155349055565b005b34801561005f57600080fd5b5060005461006d9060ff1681565b604051901515815260200160405180910390f35b61005161008f366004610150565b60015460009061009f83476101a6565b6100a99190610186565b90506000836001600160a01b03168260405160006040518083038185875af1925050503d80600081146100f8576040519150601f19603f3d011682016040523d82523d6000602084013e6100fd565b606091505b505090508061014a5760405162461bcd60e51b815260206004820152601560248201527411985a5b1959081d1bc81cd95b99081c995dd85c99605a1b604482015260640160405180910390fd5b50505050565b60008060408385031215610162578182fd5b82356001600160a01b0381168114610178578283fd5b946020939093013593505050565b6000826101a157634e487b7160e01b81526012600452602481fd5b500490565b60008160001904831182151516156101cc57634e487b7160e01b81526011600452602481fd5b50029056fea26469706673582212201592ebee726bc5f15dc53304c64237fecdfe63082fa0f43d7de1b9cab663437664736f6c63430008040033",
+  "deployedBytecode": "0x6080604052600436106100345760003560e01c8063522e1177146100395780639d9a7fe914610053578063cc6dbc2714610081575b600080fd5b6100516000805460ff19166001908117909155349055565b005b34801561005f57600080fd5b5060005461006d9060ff1681565b604051901515815260200160405180910390f35b61005161008f366004610150565b60015460009061009f83476101a6565b6100a99190610186565b90506000836001600160a01b03168260405160006040518083038185875af1925050503d80600081146100f8576040519150601f19603f3d011682016040523d82523d6000602084013e6100fd565b606091505b505090508061014a5760405162461bcd60e51b815260206004820152601560248201527411985a5b1959081d1bc81cd95b99081c995dd85c99605a1b604482015260640160405180910390fd5b50505050565b60008060408385031215610162578182fd5b82356001600160a01b0381168114610178578283fd5b946020939093013593505050565b6000826101a157634e487b7160e01b81526012600452602481fd5b500490565b60008160001904831182151516156101cc57634e487b7160e01b81526011600452602481fd5b50029056fea26469706673582212201592ebee726bc5f15dc53304c64237fecdfe63082fa0f43d7de1b9cab663437664736f6c63430008040033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 3,
+        "contract": "contracts/ExampleExternalContract.sol:ExampleExternalContract",
+        "label": "completed",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_bool"
+      },
+      {
+        "astId": 5,
+        "contract": "contracts/ExampleExternalContract.sol:ExampleExternalContract",
+        "label": "totalStaked",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      }
+    ],
+    "types": {
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
